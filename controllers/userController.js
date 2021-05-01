@@ -454,6 +454,9 @@ let userController = {
       }
     }
   },
+  getChatroom: (req,res) => {
+    res.render('chatroom')
+  }
 
 }
 

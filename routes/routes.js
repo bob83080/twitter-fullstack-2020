@@ -71,7 +71,7 @@ router.post('/tweets/:id/replies', authenticated, replyController.postReply)
 router.post('/tweets/:tweetId/like', authenticated, userController.addLike)
 router.post('/tweets/:tweetId/unlike', authenticated, userController.removeLike)
 
-
+router.get('/users/chatroom', authenticated, userController.getChatroom)
 
 router.get('/users/:id/tweets', authenticated, userController.getTopUsers, userController.getUser)
 
