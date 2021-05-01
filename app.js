@@ -5,6 +5,8 @@ const bodyParser = require('body-parser')
 const flash = require('connect-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
+const socket = require('socket.io')
+
 const helpers = require('./_helpers');
 
 
@@ -38,8 +40,14 @@ app.use((req, res, next) => {
     next()
 })
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+const sever = app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+const io = socket(sever)
 
+io.on('connection', (socket) => {
+    socket.on('chat message', msg => {
+        io.emit('chat message', msg)
+    })
+})
 
 require('./routes')(app)
 
