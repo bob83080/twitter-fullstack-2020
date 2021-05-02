@@ -60,16 +60,21 @@ io.on('connection', (socket) => {
     //上線名單蒐集
     activeUsers.push({currentUserID, currentUserName, currentUserAvatar, currentUserAccount})
     //目前的使用者
-    // const currentUser = activeUsers.find(user => user.currentUserID ===  currentUserID)
+    const currentUser = activeUsers.find(user => user.currentUserID ===  currentUserID)
     //發送到active-users客戶端上線的名單
     io.emit('active-users', activeUsers)
 
-    // socket.broadcast.emit('chat message', `${currentUser.currentUserName} 上線`)
+    socket.broadcast.emit('chat message', `${currentUser.currentUserName} 上線`)
+
     socket.on('chat message', (msg) => {
     io.emit('chat message', msg)
 })
     socket.on('disconnect', () => {
         console.log('user disconnected')
+        
+        activeUsers=  activeUsers.filter(user => user.currentUserID!== currentUser.currentUserID)
+        socket.broadcast.emit('chat message', `${currentUser.currentUserName} 離開聊天`)
+    
     })
 })
 require('./routes')(app)
