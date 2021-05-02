@@ -32,21 +32,39 @@ app.use(flash())
 
 app.use(methodOverride('_method'))
 app.use('/upload', express.static(__dirname + '/upload'))
-
+let currentUserID,currentUserName,currentUserAvatar,currentUserAccount  
 app.use((req, res, next) => {
     res.locals.success_messages = req.flash('success_messages')
     res.locals.error_messages = req.flash('error_messages')
     res.locals.user = helpers.getUser(req)
+    if (helpers.getUser(req)) {
+    currentUserID = helpers.getUser(req).id
+    currentUserName = helpers.getUser(req).name
+    currentUserAvatar = helpers.getUser(req).avatar
+    currentUserAccount = helpers.getUser(req).account
+}
     next()
 })
 
+let activeUsers = []
 const sever = app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 const io = socket(sever)
 
+
+
 io.on('connection', (socket) => {
+    console.log('hi socket', socket.id)
     console.log('a user connected')
+
+    //上線名單蒐集
+    activeUsers.push({currentUserID, currentUserName, currentUserAvatar, currentUserAccount})
+    //目前的使用者
+    // const currentUser = activeUsers.find(user => user.currentUserID ===  currentUserID)
+    //發送到active-users客戶端上線的名單
+    io.emit('active-users', activeUsers)
+
+    socket.broadcast.emit('chat message', `${currentUser.currentUserName} 上線`)
     socket.on('chat message', (msg) => {
-        console.log('msg')
     io.emit('chat message', msg)
 })
     socket.on('disconnect', () => {
