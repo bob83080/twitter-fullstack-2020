@@ -118,6 +118,7 @@ io.on('connection', async socket => {
         }).then((messages => {
             receiverMessage = {
                 text: messages.dataValues.text,
+                name: loginUser.loginName,
                 avatar: loginUser.loginAvatar,
                 time: moment(messages.dataValues.createdAt).format('LLL')
             }

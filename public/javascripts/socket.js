@@ -57,8 +57,8 @@ socket.on('onlineUsers', (data) => {
                   style="background: #C4C4C4;border-radius: 100%; width: 50px; height: 50px">
               <div class="media-body ml-2 align-self-center">
                 <div class="mb-1">
-                  <span class="user-name">${user.loginName}</span>
-                  <span class="user-account">@${user.loginAccount}</span><br>
+                  <span class="user-name" style="color:black;font-weight: bold">${user.loginName}</span>
+                  <span class="user-account"style="color:gray;font-weight: bold" >@${user.loginAccount}</span><br>
                 </div>
               </div>
           </div>
@@ -136,7 +136,7 @@ socket.on('chat', data => {
             <div class="bg-light rounded py-2 px-3 mb-2">
               <p class="text-small mb-0 text-muted">${data.text}</p>
             </div>
-            <p class="small text-muted">${data.time}</p>
+            <p class="small text-muted">${data.name}。${data.time}</p>
           </div>
         </div>
       `
