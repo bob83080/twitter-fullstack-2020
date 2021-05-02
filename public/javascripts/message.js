@@ -1,3 +1,5 @@
+
+
 const socket = io()
 var form = document.getElementById('form')
 var input = document.getElementById('input')
@@ -30,17 +32,28 @@ userList.innerHTML = rawHTML
 
 
 form.addEventListener('submit', function (e) {
-      let msg =  input.value
-      
-      e.preventDefault()
-      if (msg) {
-        socket.emit('chat message', msg);
-        input.value = ''
-      }
-    })
-    
+  let msg = input.value
+  e.preventDefault()
+  send (msg)
+})
+function send () {
+  let msg = input.value
+  socket.emit('chat message', msg)
+  renderMessage(msg)
+  document.querySelector('#input').value = ''
+}
+function renderMessage (msg){
+  messages.innerHTML += `
+    <div style="text-align: right">
+      <div class="bg-light rounded py-2 px-3 mb-3" style="width:auto !important; display:inline-block">
+        <p class=" text-small mb-0 text-muted">${msg}</p>
+      </div>
+    </div>
+  `
+}  
 
-socket.on('chat message', function (msg) {
+
+socket.on('chat message self', function (msg) {
   var item = document.createElement('li')
   item.textContent = msg;
   messages.appendChild(item)
@@ -57,3 +70,18 @@ socket.on('chat message info',(data) => {
 })
 
 socket.on('active-users', (data) => { renderActiveUserList(data) })
+socket.on('chat message', (data) => {
+  messages.innerHTML += `
+        <div class="media w-50 mb-3">
+          <img src="${user.currentUserAvatar}" alt="user"
+            width="50" class="rounded-circle">
+          <div class="media-body ml-3">
+            <div class="bg-light rounded py-2 px-3 mb-2">
+              <p class="text-small mb-0 text-muted">${user.currentUserAvatar.text}</p>
+            </div>
+            <p class="small text-muted">${data.time}</p>
+          </div>
+        </div>
+      `
+  scrollWindow()
+})
