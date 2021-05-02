@@ -128,7 +128,7 @@ module.exports = {
             })),
             {}
         )
-        return queryInterface.bulkInsert(
+        queryInterface.bulkInsert(
             'Followships',
             Array.from({ length: 11 }).map((item, index) => ({
                 followerId: (index % 5) + 2,
@@ -138,10 +138,24 @@ module.exports = {
             })),
             {}
         )
+        return queryInterface.bulkInsert('Messages',
+            Array.from({ length: 15 }).map((item, index) => ({
+                id: index + 1,
+                text: faker.lorem.sentence(),
+                UserId: (index % 5) + 2,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            })
+            ),
+            {}
+        )
+
+
     },
     down: (queryInterface, Sequelize) => {
         queryInterface.bulkDelete('Users', null, {})
         queryInterface.bulkDelete('Tweets', null, {})
-        return queryInterface.bulkDelete('Replies', null, {})
+        queryInterface.bulkDelete('Replies', null, {})
+        return queryInterface.bulkDelete('Messages', null, {})
     },
 }

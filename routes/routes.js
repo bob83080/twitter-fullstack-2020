@@ -8,6 +8,7 @@ const tweetController = require('../controllers/tweetController.js')
 const userController = require('../controllers/userController.js')
 const adminController = require('../controllers/adminController.js')
 const replyController = require('../controllers/replyController.js')
+const chatController = require('../controllers/chatController')
 
 const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
@@ -71,7 +72,8 @@ router.post('/tweets/:id/replies', authenticated, replyController.postReply)
 router.post('/tweets/:tweetId/like', authenticated, userController.addLike)
 router.post('/tweets/:tweetId/unlike', authenticated, userController.removeLike)
 
-router.get('/users/chatroom', authenticated, userController.getChatroom)
+//chat
+router.get('/users/chatroom', authenticated, chatController.getChat)
 
 router.get('/users/:id/tweets', authenticated, userController.getTopUsers, userController.getUser)
 
