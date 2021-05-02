@@ -64,7 +64,7 @@ io.on('connection', (socket) => {
     //發送到active-users客戶端上線的名單
     io.emit('active-users', activeUsers)
 
-    socket.broadcast.emit('chat message', `${currentUser.currentUserName} 上線`)
+    // socket.broadcast.emit('chat message', `${currentUser.currentUserName} 上線`)
     socket.on('chat message', (msg) => {
     io.emit('chat message', msg)
 })
