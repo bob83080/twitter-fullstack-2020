@@ -44,11 +44,15 @@ const sever = app.listen(port, () => console.log(`Example app listening on port 
 const io = socket(sever)
 
 io.on('connection', (socket) => {
-    socket.on('chat message', msg => {
-        io.emit('chat message', msg)
+    console.log('a user connected')
+    socket.on('chat message', (msg) => {
+        console.log('msg')
+    io.emit('chat message', msg)
+})
+    socket.on('disconnect', () => {
+        console.log('user disconnected')
     })
 })
-
 require('./routes')(app)
 
 module.exports = app

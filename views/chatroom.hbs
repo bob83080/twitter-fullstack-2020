@@ -16,18 +16,47 @@
           <div class="public-chatroom-titles" style="font-size: 18px;color: #1C1C1C;font-weight:bold;">
             公開聊天室
           </div>
-          <div class="public-chatroom-content" style="border: #E6ECF0 1px solid;hight:500px;width:500px;">66555</div>
-          <div class="public-chatroom-typing d-flex justify-content-between"
-            style="border: #E6ECF0 1px solid;width:100%;">
-            <label for="msg">
-              <textarea name="msg" id="msg" cols="12" rows="2"
-                style="border: none;height:30px;width:550px; background-color: #F5F8FA;border-radius: 20px"></textarea>
-            </label>
-            <div class="submit-section"><i class="fas fa-paper-plane" style="color:#FF6600"></i></div>
-          </div>
+          <div class="public-chatroom-content" style="border: #E6ECF0 1px solid;hight:500px;width:500px;">
+            <ul id="messages">
 
+            </ul>
+          </div>
+          <form action="" id="form">
+            <div class="public-chatroom-typing d-flex justify-content-between"
+              style="border: #E6ECF0 1px solid;width:100%;">
+              <label for="msg">
+                <input id="input"
+                  style="border: none;height:30px;width:550px; background-color: #F5F8FA;padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; "
+                  id="input" autocomplete="off" />
+              </label>
+              <div class="submit-section"><button type="submit" class="btn ml-3 p-0" style="background-color: white;"><i
+                    class="fas fa-paper-plane" style="color:#FF6600"></i></button></div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io()
+  var form = document.getElementById('form')
+  var input = document.getElementById('input')
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault()
+    if (input.value) {
+      socket.emit('chat message', input.value);
+      input.value = ''
+    }
+  })
+
+  socket.on('chat message', function (msg) {
+    var item = document.createElement('li')
+    item.textContent = msg;
+    messages.appendChild(item)
+    window.scrollTo(0, document.body.scrollHeight)
+  })
+</script>
