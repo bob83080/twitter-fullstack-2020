@@ -361,7 +361,7 @@ let userController = {
       })
     }
   },
-  postProfile: (req, res) => {
+  postProfile: async (req, res) => {
     if (!req.body.name) {
       req.flash('error_messages', "請輸入名稱")
       return res.render(`userTweets`)
@@ -374,7 +374,7 @@ let userController = {
         const { files } = req
         if (files.avatar !== undefined & files.cover === undefined) {
           imgur.setClientID(IMGUR_CLIENT_ID);
-          imgur.upload(files.avatar[0].path, (err, img) => {
+          await imgur.upload(files.avatar[0].path, (err, img) => {
             return User.findByPk(req.params.id)
               .then((user) => {
                 user.update({
@@ -391,7 +391,7 @@ let userController = {
 
         if (files.avatar === undefined & files.cover !== undefined) {
           imgur.setClientID(IMGUR_CLIENT_ID);
-          imgur.upload(files.cover[0].path, (err, img) => {
+          await imgur.upload(files.cover[0].path, (err, img) => {
             return User.findByPk(req.params.id)
               .then((user) => {
                 user.update({
@@ -408,7 +408,7 @@ let userController = {
 
         if (files.avatar !== undefined & files.cover !== undefined) {
           imgur.setClientID(IMGUR_CLIENT_ID);
-          imgur.upload(files.avatar[0].path, (err, img) => {
+          await imgur.upload(files.avatar[0].path, (err, img) => {
             return User.findByPk(req.params.id)
               .then((user) => {
                 user.update({
@@ -434,10 +434,11 @@ let userController = {
                   })
               })
           })
+
         }
 
         else {
-          return User.findByPk(req.params.id)
+          await User.findByPk(req.params.id)
             .then((user) => {
               user.update({
                 name: req.body.name,
@@ -454,7 +455,7 @@ let userController = {
       }
     }
   },
-  getChatroom: (req,res) => {
+  getChatroom: (req, res) => {
     res.render('chatroom')
   }
 
