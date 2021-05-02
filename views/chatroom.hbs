@@ -6,32 +6,33 @@
     <div class="center-section col-9 mt-3">
       <div class="row">
         <div class="active-user col-3" style="border: #E6ECF0 1px solid;hight:100%;">
-          <div class="active-user-title py-1"
+          <div class="active-user-title py-2"
             style="font-size: 18px;line-height: 26px;color: #1C1C1C;font-weight:bold;">
             上線使用者
           </div>
-          <div class="active-user-list" id="userList"></div>
+          <div class="active-user-list " id="userList" style="overflow-y: scroll; height: 598px;"></div>
 
         </div>
         <div class="public-chatroom col-9" style="border: #E6ECF0 1px solid;">
-          <div class="public-chatroom-titles" id="usertitle" style="font-size: 18px;color: #1C1C1C;font-weight:bold;">
+          <div class="public-chatroom-titles py-2" id="usertitle"
+            style="font-size: 18px;color: #1C1C1C;font-weight:bold;border-bottom:1px #E6ECF0 solid;">
             公開聊天室
           </div>
-          <div class="public-chatroom-content" style="border: #E6ECF0 1px solid;hight:500px;width:500px;">
+          <div class="public-chatroom-content px-4 py-5" style="overflow-y: scroll; height: 598px;">
             <ul id="messages">
 
             </ul>
           </div>
           <form action="" id="form">
-            <div class="public-chatroom-typing d-flex justify-content-between"
-              style="border: #E6ECF0 1px solid;width:100%;">
+            <div class="public-chatroom-typing d-flex justify-content-between mb-2" style="width:100%;">
               <label for="msg">
                 <input id="input"
                   style="border: none;height:30px;width:550px; background-color: #F5F8FA;padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; "
                   autocomplete="off" placeholder="輸入訊息..." />
               </label>
               <div class="submit-section"><button type="submit" class="btn ml-3 p-0" style="background-color: white;"><i
-                    class="fas fa-paper-plane" style="color:#FF6600"></i></button></div>
+                    class="fas fa-paper-plane" style="color:#FF6600"></i></button>
+              </div>
             </div>
           </form>
         </div>

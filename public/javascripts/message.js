@@ -28,6 +28,7 @@ function renderActiveUserList(data) {
 </div>
 ` }) 
 userList.innerHTML = rawHTML
+window.scrollTo(0, document.body.scrollHeight)
 }
 
 
@@ -50,6 +51,7 @@ function renderMessage (msg){
       </div>
     </div>
   `
+  window.scrollTo(0, document.body.scrollHeight)
 }  
 
 
@@ -67,6 +69,7 @@ socket.on('chat message info',(data) => {
       </div>
     </div>
   `
+  window.scrollTo(0, document.body.scrollHeight)
 })
 
 socket.on('active-users', (data) => { renderActiveUserList(data) })
@@ -83,5 +86,5 @@ socket.on('chat message', (data) => {
           </div>
         </div>
       `
-  scrollWindow()
+  window.scrollTo(0, document.body.scrollHeight)
 })

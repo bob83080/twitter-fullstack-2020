@@ -66,8 +66,8 @@ io.on('connection', (socket) => {
 
     socket.broadcast.emit('chat message info', `${currentUser.currentUserName} 上線`)
 
-    socket.on('chat message', (msg) => {
-    io.emit('chat message', msg)
+    socket.on('chat message', (data) => {
+    io.emit('chat message', data)
 })
     socket.on('disconnect', () => {
         console.log('user disconnected')
