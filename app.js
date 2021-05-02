@@ -47,7 +47,6 @@ app.use((req, res, next) => {
         loginAvatar = helpers.getUser(req).avatar
         loginAccount = helpers.getUser(req).account
     }
-
     next()
 })
 
@@ -59,10 +58,7 @@ const io = socket(sever)
 
 io.on('connection', async socket => {
     console.log('a user connected!');
-
-    // push user data to online user list
     onlineUsers.push({ loginID, loginName, loginAvatar, loginAccount })
-    // record user info
     const loginUser = onlineUsers.find(user => user.loginID === loginID)
 
     let historyMessages
@@ -81,7 +77,7 @@ io.on('connection', async socket => {
 
     let users
     await User.findAll().then(results => {
-        // console.log(results[0].dataValues)
+
         users = results.map(item => ({
             ...item.dataValues,
             account: item.dataValues.account,
@@ -90,18 +86,10 @@ io.on('connection', async socket => {
         }))
     })
 
-    // emit history message to user
     socket.emit('history', historyMessages)
-
-
-    // broadcast online
     socket.broadcast.emit('message', `${loginUser.loginName} 上線`)
 
-    // emit online user
     io.emit('onlineUsers', onlineUsers)
-
-
-    // socket.broadcast.emit('online', loginAvatar)
 
     socket.on("message", data => {
         console.log('send message')
@@ -111,39 +99,32 @@ io.on('connection', async socket => {
     socket.on("connected", users => {
         console.log('send user')
         console.log('users:', users)
-
         io.emit("connected", users)
     })
 
     socket.on('disconnect', function () {
         console.log('a user go out')
         socket.broadcast.emit('message', `${loginUser.loginName} 離線`)
-        // delete user date in online user list
+
         onlineUsers = onlineUsers.filter(users => users.loginID !== loginUser.loginID)
         socket.broadcast.emit('onlineUsers', onlineUsers)
     })
 
-    // 接收 chat 發出的訊息，無法即時
+
     socket.on('chat', async msg => {
-        // console.log('測試能否抓到 chat 的訊息內容:', msg)
         await Message.create({
             UserId: loginUser.loginID,
             text: msg
         }).then((messages => {
-            // console.log('messages', messages)
-            // console.log('Message text:', messages.dataValues.text)
-            receiverMessage = Object.keys(messages).forEach(item => ({
+            receiverMessage = {
                 text: messages.dataValues.text,
                 avatar: loginUser.loginAvatar,
                 time: moment(messages.dataValues.createdAt).format('LLL')
-            }))
+            }
         }))
         socket.broadcast.emit('chat', receiverMessage)
     })
-
 })
-
-
 
 
 require('./routes')(app)
