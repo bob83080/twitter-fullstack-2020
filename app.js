@@ -64,7 +64,7 @@ io.on('connection', (socket) => {
     //發送到active-users客戶端上線的名單
     io.emit('active-users', activeUsers)
 
-    socket.broadcast.emit('chat message', `${currentUser.currentUserName} 上線`)
+    socket.broadcast.emit('chat message info', `${currentUser.currentUserName} 上線`)
 
     socket.on('chat message', (msg) => {
     io.emit('chat message', msg)
@@ -73,7 +73,7 @@ io.on('connection', (socket) => {
         console.log('user disconnected')
         
         activeUsers=  activeUsers.filter(user => user.currentUserID!== currentUser.currentUserID)
-        socket.broadcast.emit('chat message', `${currentUser.currentUserName} 離開聊天`)
+        socket.broadcast.emit('chat message info', `${currentUser.currentUserName} 離開聊天`)
     
     })
 })

@@ -2,6 +2,8 @@ const socket = io()
 var form = document.getElementById('form')
 var input = document.getElementById('input')
 const userList = document.getElementById('userList')
+const messages = document.getElementById('messages')
+
 
 function renderActiveUserList(data) {
     let rawHTML = ''
@@ -43,6 +45,15 @@ socket.on('chat message', function (msg) {
   item.textContent = msg;
   messages.appendChild(item)
   window.scrollTo(0, document.body.scrollHeight)
+})
+socket.on('chat message info',(data) => {
+  messages.innerHTML += `
+    <div style="text-align: center">
+      <div class="bg-light rounded py-2 px-3 mb-3" style="width:auto !important; display:inline-block">
+        <p class=" text-small mb-0 text-muted">${data}</p>
+      </div>
+    </div>
+  `
 })
 
 socket.on('active-users', (data) => { renderActiveUserList(data) })
