@@ -40,14 +40,28 @@ app.use((req, res, next) => {
     next()
 })
 
-const sever = app.listen(port, () => console.log(`Example app listening on port ${port}!`))
-const io = socket(sever)
+
+
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+
+server.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
 io.on('connection', (socket) => {
-    socket.on('chat message', msg => {
-        io.emit('chat message', msg)
-    })
-})
+    console.log('a user connected');
+
+    socket.on('chat message', (msg) => {
+        io.emit('chat message', msg);
+        console.log('message: ' + msg);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
+
+
+});
+
 
 require('./routes')(app)
 
